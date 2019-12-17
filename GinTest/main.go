@@ -26,7 +26,11 @@ func main() {
 		ctx.HTML(200, "index.html", gin.H{"data": hoge})
 	})
 	router.GET("users", func(ctx *gin.Context) {
-		ctx.HTML(200, "users.html", gin.H{"User": selectUser(db)})
+		ctx.HTML(200, "users.html", gin.H{"User": allUser(db)})
+	})
+	id := 1
+	router.GET("user/" + id, func(ctx *gin.Context) {
+		ctx.HTML(200, "users.html", gin.H{"User": allUser(db)})
 	})
 	router.Run()
 	defer db.Close()
@@ -44,7 +48,7 @@ func dbInit() (db *sql.DB, err error) {
 	return db, nil
 }
 
-func selectUser(db *sql.DB) []User {
+func allUser(db *sql.DB) []User {
 	// SELECT
 	rows, err := db.Query("SELECT * FROM users;")
 	
